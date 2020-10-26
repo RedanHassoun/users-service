@@ -5,4 +5,9 @@ export class AppUtils {
         }
         return true;
     }
+
+    public static getFullException(err: Error) {
+        if (!err) return '';
+        return `${err.message}, stack: ${err.stack}`;
+    }
 }
