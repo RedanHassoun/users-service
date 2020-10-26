@@ -1,6 +1,8 @@
 import { Container } from "inversify"
 import { UsersApi } from "./routes/users.api";
 import { UsersController } from "./controllers/users-controller";
+import { UsersRepository } from "./repositories/users-repository";
+import { UsersService } from "./services/users-service";
 
 export class IOCContainerConfig {
 
@@ -9,6 +11,8 @@ export class IOCContainerConfig {
 
         container.bind<UsersApi>(UsersApi).toSelf();
         container.bind<UsersController>(UsersController).toSelf();
+        container.bind<UsersRepository>(UsersRepository).toSelf();
+        container.bind<UsersService>(UsersService).toSelf();
 
         return container;
     }

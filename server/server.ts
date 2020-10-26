@@ -2,12 +2,13 @@ import express = require('express');
 import bodyParser = require('body-parser');
 import { UsersApi } from '../routes/users.api';
 import * as http from 'http';
+import { inject } from 'inversify';
 
 export class UsersManagementApp {
     private app: express.Express;
     private server: http.Server;
 
-    constructor(private usersApi: UsersApi) {
+    constructor(@inject(UsersApi) private usersApi: UsersApi) {
         this.app = express();
         this.app.use(bodyParser.json());
     }

@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import { UsersApi } from './routes/users.api';
 import { IOCContainerConfig } from "./inversify.config";
 import { UsersManagementApp } from './server/server';
