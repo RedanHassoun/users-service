@@ -12,4 +12,8 @@ export class UsersService {
         console.log(`Creating user: ${user.name}`);
         return await this.usersRepository.save(user);
     }
+
+    public async getAll(): Promise<User[]> {
+        return await this.usersRepository.getAll();
+    }
 }

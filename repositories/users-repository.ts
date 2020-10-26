@@ -11,5 +11,8 @@ export class UsersRepository {
         this.users.push(user);
         return user;
     }
-}
 
+    public async getAll(): Promise<User[]> {
+        return this.users;
+    }
+}

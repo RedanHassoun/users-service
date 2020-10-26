@@ -14,4 +14,9 @@ export class UsersController {
         const createdUser: User = await this.usersService.create(userToCreate);
         res.send(createdUser);
     }
+
+    public getAll = async (req: any, res: any, next: any) => {
+        const users: User[] = await this.usersService.getAll();
+        res.send(users);
+    }
 }
