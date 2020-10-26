@@ -19,4 +19,10 @@ export class UsersController {
         const users: User[] = await this.usersService.getAll();
         res.send(users);
     }
+
+    public delete = async (req: any, res: any, next: any) => {
+        const userId: string = req.params.id;
+        await this.usersService.delete(userId);
+        res.send(`User ${userId} has been deleted`);
+    } 
 }

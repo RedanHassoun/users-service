@@ -19,5 +19,6 @@ export class UsersApi implements AppRoute {
         this.router = Router();
         this.router.post('/api/v1/user', this.usersController.createUser);
         this.router.get('/api/v1/users', this.usersController.getAll);
+        this.router.delete('/api/v1/user/:id', this.usersController.delete);
     }
 }
