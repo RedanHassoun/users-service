@@ -15,7 +15,7 @@ export class UsersRepository {
         }
         console.log(`Creating user with mail '${user.email}'`);
 
-        const createdUser = await User.create(user);
+        const createdUser = await User.create(user, { transaction: transaction });
 
         console.log(`created ${JSON.stringify(createdUser)}`);
 
@@ -32,7 +32,8 @@ export class UsersRepository {
             throw new NotFoundError(`Cannot delete user: ${id} because it is not found`);
         }
         await User.destroy({
-            where: { id: id }
+            where: { id: id },
+            transaction: transaction
         });
     }
 }
