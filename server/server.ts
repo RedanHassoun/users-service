@@ -10,6 +10,7 @@ import { AppDBConnection } from '../repositories/app-db-connection';
 export class UsersManagementApp {
     private app: express.Express;
     private server: http.Server;
+    private readonly DB_CONNECTION_RETRY_DELAY_MILLIS = 5000;
 
     constructor(@inject(UsersApi) private usersApi: UsersApi, 
                 @inject(AppDBConnection) private dBConnection: AppDBConnection) {
@@ -32,13 +33,15 @@ export class UsersManagementApp {
         let retryNum = 5;
         while(retryNum > 0) {
             try {
-                console.log('connecting...');
+                console.log('Connecting to db...');
                 await this.dBConnection.connect(); 
+                console.log('Connected to db.');
                 break;
             } catch(err) {
-                console.error(err.message);
+                console.error(
+                    `Cannot connect to db, ${err.message}, retrying in: ${this.DB_CONNECTION_RETRY_DELAY_MILLIS} milliseconds`);
                 retryNum--;
-                await new Promise(res => setTimeout(res, 5000));
+                await new Promise(res => setTimeout(res, this.DB_CONNECTION_RETRY_DELAY_MILLIS));
             }
         }
     }
