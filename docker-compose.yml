@@ -9,11 +9,15 @@ services:
     ports:
       - "3000:3000"
     depends_on:
-      - postgres
+      - db
     environment:
-      DATABASE_URL: postgres://admin@postgres/users-db
-  postgres:
+      DATABASE_URL: postgres://redan@postgres/usersapp
+  db:
+    tty: true
     image: postgres:9.6.2-alpine
+    ports:
+      - "5432:5432"
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_DB: users-db
+      POSTGRES_USER: postgres
+      POSTGRES_DB: usersapp
+      POSTGRES_PASSWORD: postgres

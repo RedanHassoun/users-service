@@ -1,18 +1,28 @@
+import { User } from './../models/user';
 import { injectable } from 'inversify';
-// import { Sequelize } from "sequelize-typescript";
+import { Sequelize } from "sequelize-typescript";
+import { Transaction } from 'sequelize/types';
 
 @injectable ()
 export class AppDBConnection {
-    // private db: Sequelize;
+    private db: Sequelize;
 
     public async connect(): Promise<void> {
-        // this.db = new Sequelize({ TODO: use sequelize
-        //     database: 'users_db',
-        //     dialect: 'postgres',
-        //     username: 'admin',
-        //     password: '123',
-        //     models: [__dirname + '/../models/db/'],
-        // });
-        // await this.db.authenticate();
+        console.log(`Database url: ${process.env.DATABASE_URL}`);
+        this.db = new Sequelize({
+            database: 'usersapp',
+            dialect: 'postgres',
+            username: 'postgres',
+            password: 'postgres',
+            host: 'db',
+            port: 5432
+        });
+        this.db.addModels([User]);
+        await this.db.authenticate();
+        await this.db.sync();
+    }
+
+    public async createTransaction(): Promise<Transaction> {
+        return await this.db.transaction();
     }
 }

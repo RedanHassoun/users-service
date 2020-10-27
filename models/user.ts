@@ -1,20 +1,20 @@
-// import { Table, Column, PrimaryKey, IsUUID, Model } from 'sequelize-typescript';
-// @Table({
-//     tableName: 'users',
-//     schema: 'users_management'
-// }) TODO: add sequlize
-export class User { // extends Model<User> {
-    // @IsUUID(4)
-    // @Column
-    // @PrimaryKey
-    public id: string;
+import { Table, Column, PrimaryKey, IsUUID, Model, DataType, AutoIncrement } from 'sequelize-typescript';
 
-    // @Column
+@Table({
+    tableName: 'users'
+})
+export class User extends Model<User> {
+    @PrimaryKey
+    @AutoIncrement
+    @Column(DataType.INTEGER)
+    public id: number;
+
+    @Column(DataType.STRING)
     public name: string;
 
-    // @Column
+    @Column(DataType.STRING)
     public email: string;
 
-    // @Column
+    @Column(DataType.STRING)
     public password: string;
 }

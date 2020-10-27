@@ -32,9 +32,9 @@ export class UsersController {
     }
 
     public delete = async (req: any, res: any, next: any) => {
-        let userId: string = null;
+        let userId: number = null;
         try {
-            userId = req.params.id;
+            userId = Number(req.params.id);
             await this.usersService.delete(userId);
             res.send(`User ${userId} has been deleted`);
         } catch(err) {

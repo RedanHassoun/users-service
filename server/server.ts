@@ -21,20 +21,26 @@ export class UsersManagementApp {
         this.initRoutes();
         this.listenToRequests();
         this.initErrorHandler();
-        // this.initDB(); TODO: connect to DB
+        this.initDB();
     }
 
     private initRoutes(): void {
         this.app.use(this.usersApi.getRouter());
     }
 
-    private initDB(): void {
-        this.dBConnection.connect()
-            .then(res => console.log('connected to DB'))
-            .catch(err => {
-                console.error(`Cannot connect to DB, ${AppUtils.getFullException(err)}`);
-                throw err;
-            });
+    private async initDB(): Promise<void> {
+        let retryNum = 5;
+        while(retryNum > 0) {
+            try {
+                console.log('connecting...');
+                await this.dBConnection.connect(); 
+                break;
+            } catch(err) {
+                console.error(err.message);
+                retryNum--;
+                await new Promise(res => setTimeout(res, 5000));
+            }
+        }
     }
 
     private initErrorHandler(): void {
