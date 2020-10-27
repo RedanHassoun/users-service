@@ -21,7 +21,7 @@ export class UsersManagementApp {
         this.initRoutes();
         this.listenToRequests();
         this.initErrorHandler();
-        this.initDB();
+        // this.initDB(); TODO: connect to DB
     }
 
     private initRoutes(): void {
