@@ -1,15 +1,18 @@
+import { AppUtils } from './../common/app-utils';
 import express = require('express');
 import bodyParser = require('body-parser');
 import { UsersApi } from '../routes/users.api';
 import * as http from 'http';
 import { inject } from 'inversify';
 import { globalErrorHandler } from '../middlewares/error-handler';
+import { AppDBConnection } from '../repositories/app-db-connection';
 
 export class UsersManagementApp {
     private app: express.Express;
     private server: http.Server;
 
-    constructor(@inject(UsersApi) private usersApi: UsersApi) {
+    constructor(@inject(UsersApi) private usersApi: UsersApi, 
+                @inject(AppDBConnection) private dBConnection: AppDBConnection) {
         this.app = express();
         this.app.use(bodyParser.json());
     }
@@ -18,10 +21,20 @@ export class UsersManagementApp {
         this.initRoutes();
         this.listenToRequests();
         this.initErrorHandler();
+        this.initDB();
     }
 
     private initRoutes(): void {
         this.app.use(this.usersApi.getRouter());
+    }
+
+    private initDB(): void {
+        this.dBConnection.connect()
+            .then(res => console.log('connected to DB'))
+            .catch(err => {
+                console.error(`Cannot connect to DB, ${AppUtils.getFullException(err)}`);
+                throw err;
+            });
     }
 
     private initErrorHandler(): void {

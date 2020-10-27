@@ -3,6 +3,7 @@ import { UsersApi } from "./routes/users.api";
 import { UsersController } from "./controllers/users-controller";
 import { UsersRepository } from "./repositories/users-repository";
 import { UsersService } from "./services/users-service";
+import { AppDBConnection } from "./repositories/app-db-connection";
 
 export class IOCContainerConfig {
 
@@ -13,6 +14,7 @@ export class IOCContainerConfig {
         container.bind<UsersController>(UsersController).toSelf();
         container.bind<UsersRepository>(UsersRepository).toSelf();
         container.bind<UsersService>(UsersService).toSelf();
+        container.bind<AppDBConnection>(AppDBConnection).toSelf();
 
         return container;
     }
