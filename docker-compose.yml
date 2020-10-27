@@ -12,6 +12,7 @@ services:
       - db
     environment:
       DATABASE_URL: postgres://redan@postgres/usersapp
+      APP_PORT: 3000
   db:
     tty: true
     image: postgres:9.6.2-alpine

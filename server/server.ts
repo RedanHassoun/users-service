@@ -48,8 +48,11 @@ export class UsersManagementApp {
     }
 
     private listenToRequests(): void {
-        this.server = this.app.listen(3000, () => { // TODO: use config for port
-            console.log(`Listening for port: 3000`);
+        if (!AppUtils.hasValue(process.env.APP_PORT)) {
+            throw new Error('Cannot start server, the APP_PORT must be defined as an environment variable');
+        }
+        this.server = this.app.listen(process.env.APP_PORT, () => {
+            console.log(`Listening for port: ${process.env.APP_PORT}`);
         });
     }
 }
