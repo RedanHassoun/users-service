@@ -38,8 +38,8 @@ export class UsersService {
     }
 
     public async delete(id: number): Promise<void> {
-        if (!AppUtils.hasValue(id)) {
-            throw new InputError('Cannot delete user because the id is not defined');
+        if (!AppUtils.isInteger(id)) {
+            throw new InputError('Cannot delete user, the id must be an integer');
         }
 
         let transaction: Transaction = null;
