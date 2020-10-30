@@ -1,3 +1,4 @@
+import { Logger } from './common/logger';
 import { Container } from "inversify"
 import { UsersApi } from "./routes/users.api";
 import { UsersController } from "./controllers/users-controller";
@@ -12,5 +13,6 @@ container.bind<UsersController>(UsersController).toSelf();
 container.bind<UsersRepository>(UsersRepository).toSelf();
 container.bind<UsersService>(UsersService).toSelf();
 container.bind<AppDBConnection>(AppDBConnection).toSelf();
+container.bind<Logger>(Logger).toSelf();
 
 export default container;

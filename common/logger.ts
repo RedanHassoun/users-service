@@ -9,12 +9,12 @@ export class Logger {
     
     public info(message: string): void {
         const date = new Date();
-        console.log(`${date.toLocaleString()} |   ${message}`);
+        console.log(`${date.toLocaleString()}  [INFO]  ${message}`);
     }
 
     public error(message: string, err: Error): void {
         const date = new Date();
         const fullError = err ? `\n${AppUtils.getFullException(err)}` : '';
-        console.log(`${date.toLocaleString()} |   ${message}${fullError}`);
+        console.log(`${date.toLocaleString()}  [ERROR]  ${message}${fullError}`);
     } 
 }
