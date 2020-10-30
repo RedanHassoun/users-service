@@ -7,7 +7,7 @@ import { mock, when, instance, anything } from "ts-mockito";
 import { User } from '../models/user';
 import { Logger } from '../common/logger';
 
-describe('Users HttpRequest', () => {
+describe('Users Controller', () => {
     const mockedLogger = instance(mock(Logger));
 
     it('Should return and object with status code 201 if the user was created', async () => {
