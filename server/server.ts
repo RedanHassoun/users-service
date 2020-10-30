@@ -6,6 +6,8 @@ import * as http from 'http';
 import { inject } from 'inversify';
 import { AppDBConnection } from '../repositories/app-db-connection';
 import { globalResponseHandler } from '../middlewares/response-handler';
+const swaggerJSDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
 
 export class UsersManagementApp {
     private app: express.Express;
@@ -20,13 +22,31 @@ export class UsersManagementApp {
 
     public start(): void {
         this.initRoutes();
-        this.listenToRequests();
         this.handleAllResponses();
         this.initDB();
+        this.initDocumentation();
+        this.listenToRequests();
     }
 
     private initRoutes(): void {
         this.app.use(this.usersApi.getRouter());
+    }
+
+    private initDocumentation(): void {
+        const port = process.env.APP_PORT;
+        const swaggerOptions = {
+            swaggerDefinition: {
+                info: {
+                    title: 'Users service',
+                    description: 'A service to manage users',
+                    version: '1.0.0'
+                },
+                servers: [`http://localhost:${port}`]
+            },
+            apis: ['./routes/*.*']
+        };
+        const docs = swaggerJSDoc(swaggerOptions);
+        this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(docs));
     }
 
     private async initDB(): Promise<void> {
