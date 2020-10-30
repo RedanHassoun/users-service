@@ -2,7 +2,7 @@ import { AlreadyExistError } from './../exeptions/already-exist-error';
 import { UsersRepository } from './../repositories/users-repository';
 import { UsersService } from './../services/users-service';
 import * as chai from 'chai';   
-import { User } from '../models/user';
+import { User } from '../models/db/user';
 import { AppDBConnection } from '../repositories/app-db-connection';
 import { mock, instance, when } from 'ts-mockito';
 import { Logger } from '../common/logger';

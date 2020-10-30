@@ -1,4 +1,4 @@
-import { User } from './../models/user';
+import { User } from '../models/db/user';
 import { injectable } from 'inversify';
 import { Sequelize } from "sequelize-typescript";
 import { Transaction } from 'sequelize/types';

@@ -1,20 +1,22 @@
-import { AppUtils } from './../common/app-utils';
+import { UserDto } from './../models/dto/user-dto';
 import { UsersService } from './../services/users-service';
 import { injectable, inject  } from 'inversify';
-import { User } from '../models/user';
+import { User } from '../models/db/user';
 import { Logger } from '../common/logger';
+import { DtoMapper } from '../common/dto-mapper';
 
 @injectable ()
 export class UsersController {
 
     constructor(@inject(UsersService) private usersService: UsersService,
-                @inject(Logger) private logger: Logger){
+                @inject(Logger) private logger: Logger,
+                @inject(DtoMapper) private dtoMapper: DtoMapper){
     }
 
     public createUser = async (req: any, res: any, next: any) => {
         let userToCreate: User = null;
         try {
-            userToCreate = req.body;
+            userToCreate = this.dtoMapper.asEntity(req.body);
             const createdUser: User = await this.usersService.create(userToCreate);
 
             res.status(201);
@@ -28,7 +30,9 @@ export class UsersController {
     public getAll = async (req: any, res: any, next: any) => {
         try {
             const users: User[] = await this.usersService.getAll();
-            next(users);
+            
+            const usersDto: UserDto[] = users.map(user => this.dtoMapper.asDto(user));
+            next(usersDto);
         } catch(err) {
             this.logger.error(`Cannot get all users`, err);
             next(err);

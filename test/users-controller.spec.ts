@@ -1,14 +1,18 @@
+import "reflect-metadata";
+import { DtoMapper } from './../common/dto-mapper';
 import { NotFoundError } from './../exeptions/not-found-error';
 import { HttpRequestStub, HttpResponseStub } from './stubs/expres-http-stubs';
 import { expect } from 'chai';
 import { UsersController } from './../controllers/users-controller';
 import { UsersService } from './../services/users-service';
 import { mock, when, instance, anything } from "ts-mockito";
-import { User } from '../models/user';
+import { User } from '../models/db/user';
 import { Logger } from '../common/logger';
+import container from './../inversify.config';
 
 describe('Users Controller', () => {
     const mockedLogger = instance(mock(Logger));
+    const dtoMapper = container.get(DtoMapper);
 
     it('Should return and object with status code 201 if the user was created', async () => {
         const mockedService = mock(UsersService);
@@ -24,7 +28,7 @@ describe('Users Controller', () => {
 
         const serviceInstance = instance(mockedService);
 
-        const usersController = new UsersController(serviceInstance, mockedLogger);
+        const usersController = new UsersController(serviceInstance, mockedLogger, dtoMapper);
 
         const req = new HttpRequestStub();
         req.body = {
@@ -48,7 +52,7 @@ describe('Users Controller', () => {
 
         const serviceInstance = instance(mockedService);
 
-        const usersController = new UsersController(serviceInstance, mockedLogger);
+        const usersController = new UsersController(serviceInstance, mockedLogger, dtoMapper);
 
         const req = new HttpRequestStub();
         req.params = {

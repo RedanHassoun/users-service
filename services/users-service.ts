@@ -1,7 +1,7 @@
 import { Transaction } from 'sequelize/types';
 import { AppUtils } from './../common/app-utils';
 import { injectable, inject  } from 'inversify';
-import { User } from '../models/user';
+import { User } from '../models/db/user';
 import { UsersRepository } from '../repositories/users-repository';
 import { InputError } from '../exeptions/input-error';
 import { AppDBConnection } from '../repositories/app-db-connection';

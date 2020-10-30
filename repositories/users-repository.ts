@@ -2,7 +2,7 @@ import { Transaction } from 'sequelize/types';
 import { AlreadyExistError } from './../exeptions/already-exist-error';
 import { AppUtils } from './../common/app-utils';
 import { injectable, inject  } from 'inversify';
-import { User } from '../models/user';
+import { User } from '../models/db/user';
 import { NotFoundError } from '../exeptions/not-found-error';
 import { Logger } from '../common/logger';
 
