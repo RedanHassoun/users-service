@@ -4,7 +4,7 @@ export class HttpRequestStub {
 }
 
 export class HttpResponseStub {
-    private code = null;
+    private code = 200;
 
     public status(newStatus) {
         this.code = newStatus;
@@ -17,8 +17,4 @@ export class HttpResponseStub {
     public getStatus() {
         return this.code;
     }
-}
-
-export function nextStub() {
-
 }

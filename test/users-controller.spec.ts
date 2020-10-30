@@ -1,4 +1,5 @@
-import { HttpRequestStub, HttpResponseStub, nextStub } from './stubs/expres-http-stubs';
+import { NotFoundError } from './../exeptions/not-found-error';
+import { HttpRequestStub, HttpResponseStub } from './stubs/expres-http-stubs';
 import { expect } from 'chai';
 import { UsersController } from './../controllers/users-controller';
 import { UsersService } from './../services/users-service';
@@ -34,6 +35,25 @@ describe('Users HttpRequest', () => {
         usersController.createUser(req, res, (result) => {
             expect(res.getStatus()).to.equal(201);
             expect(result).not.to.be.null;
+        });
+    });
+
+    it('Should return a not found error in case we try to delete a non existing user', async () => {
+        const mockedService = mock(UsersService);
+
+        when(mockedService.delete(anything())).thenThrow(new NotFoundError(''));
+
+        const serviceInstance = instance(mockedService);
+
+        const usersController = new UsersController(serviceInstance);
+
+        const req = new HttpRequestStub();
+        req.params = {
+            id: 5 
+        };
+        const res = new HttpResponseStub();
+        usersController.delete(req, res, (result) => {
+            expect(result).to.be.an.instanceof(NotFoundError);
         });
     });
 });
