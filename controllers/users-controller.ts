@@ -14,7 +14,9 @@ export class UsersController {
         try {
             userToCreate = req.body;
             const createdUser: User = await this.usersService.create(userToCreate);
-            res.send(createdUser);
+
+            res.status(201);
+            next(createdUser);
         } catch (err) {
             console.error(`Cannot create user: ${JSON.stringify(userToCreate)}, ${AppUtils.getFullException(err)}`);
             next(err);
@@ -24,7 +26,7 @@ export class UsersController {
     public getAll = async (req: any, res: any, next: any) => {
         try {
             const users: User[] = await this.usersService.getAll();
-            res.send(users);
+            next(users);
         } catch(err) {
             console.error(`Cannot get all users, ${AppUtils.getFullException(err)}`);
             next(err);
@@ -36,7 +38,7 @@ export class UsersController {
         try {
             userId = Number(req.params.id);
             await this.usersService.delete(userId);
-            res.send(`User ${userId} has been deleted`);
+            next(`User ${userId} has been deleted`);
         } catch(err) {
             console.error(`Failed to delete user: ${userId}, ${AppUtils.getFullException(err)}`);
             next(err);

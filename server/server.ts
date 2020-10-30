@@ -4,8 +4,8 @@ import bodyParser = require('body-parser');
 import { UsersApi } from '../routes/users.api';
 import * as http from 'http';
 import { inject } from 'inversify';
-import { globalErrorHandler } from '../middlewares/error-handler';
 import { AppDBConnection } from '../repositories/app-db-connection';
+import { globalResponseHandler } from '../middlewares/response-handler';
 
 export class UsersManagementApp {
     private app: express.Express;
@@ -21,7 +21,7 @@ export class UsersManagementApp {
     public start(): void {
         this.initRoutes();
         this.listenToRequests();
-        this.initErrorHandler();
+        this.handleAllResponses();
         this.initDB();
     }
 
@@ -46,8 +46,8 @@ export class UsersManagementApp {
         }
     }
 
-    private initErrorHandler(): void {
-        this.app.use(globalErrorHandler);
+    private handleAllResponses(): void {
+        this.app.use(globalResponseHandler);
     }
 
     private listenToRequests(): void {

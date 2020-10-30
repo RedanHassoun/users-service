@@ -1,12 +1,10 @@
 import "reflect-metadata";
 import { UsersApi } from './routes/users.api';
-import { IOCContainerConfig } from "./inversify.config";
 import { UsersManagementApp } from './server/server';
 import { AppDBConnection } from "./repositories/app-db-connection";
+import container from "./inversify.config";
 
-const IOCContainer = IOCContainerConfig.getContainer();
-
-const app = new UsersManagementApp(IOCContainer.get(UsersApi), IOCContainer.get(AppDBConnection));
+const app = new UsersManagementApp(container.get(UsersApi), container.get(AppDBConnection));
 
 app.start();
 
