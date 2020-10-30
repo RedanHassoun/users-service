@@ -5,16 +5,18 @@ import { User } from '../models/user';
 import { UsersRepository } from '../repositories/users-repository';
 import { InputError } from '../exeptions/input-error';
 import { AppDBConnection } from '../repositories/app-db-connection';
+import { Logger } from '../common/logger';
 
 @injectable ()
 export class UsersService {
     
     constructor(@inject(UsersRepository)  private usersRepository: UsersRepository,
-                @inject(AppDBConnection) private appDBConnection: AppDBConnection) {
+                @inject(AppDBConnection) private appDBConnection: AppDBConnection,
+                @inject(Logger) private logger: Logger) {
     }
 
     public async create(user: User): Promise<User> {
-        console.log(`Creating user: ${user.name}`);
+        this.logger.info(`Creating user: ${user.name}`);
         let transaction: Transaction = null;
         try {
             transaction = await this.appDBConnection.createTransaction();
@@ -30,7 +32,9 @@ export class UsersService {
     }
 
     public async getAll(): Promise<User[]> {
-        return await this.usersRepository.getAll();
+        const users: User[] = await this.usersRepository.getAll();
+        this.logger.info(`Returning ${users.length} users`);
+        return users;
     }
 
     public async delete(id: number): Promise<void> {

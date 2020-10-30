@@ -5,8 +5,11 @@ import { UsersController } from './../controllers/users-controller';
 import { UsersService } from './../services/users-service';
 import { mock, when, instance, anything } from "ts-mockito";
 import { User } from '../models/user';
+import { Logger } from '../common/logger';
 
 describe('Users HttpRequest', () => {
+    const mockedLogger = instance(mock(Logger));
+
     it('Should return and object with status code 201 if the user was created', async () => {
         const mockedService = mock(UsersService);
 
@@ -21,7 +24,7 @@ describe('Users HttpRequest', () => {
 
         const serviceInstance = instance(mockedService);
 
-        const usersController = new UsersController(serviceInstance);
+        const usersController = new UsersController(serviceInstance, mockedLogger);
 
         const req = new HttpRequestStub();
         req.body = {
@@ -45,7 +48,7 @@ describe('Users HttpRequest', () => {
 
         const serviceInstance = instance(mockedService);
 
-        const usersController = new UsersController(serviceInstance);
+        const usersController = new UsersController(serviceInstance, mockedLogger);
 
         const req = new HttpRequestStub();
         req.params = {

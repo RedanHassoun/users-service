@@ -2,11 +2,13 @@ import { AppUtils } from './../common/app-utils';
 import { UsersService } from './../services/users-service';
 import { injectable, inject  } from 'inversify';
 import { User } from '../models/user';
+import { Logger } from '../common/logger';
 
 @injectable ()
 export class UsersController {
 
-    constructor(@inject(UsersService) private usersService: UsersService){
+    constructor(@inject(UsersService) private usersService: UsersService,
+                @inject(Logger) private logger: Logger){
     }
 
     public createUser = async (req: any, res: any, next: any) => {
@@ -18,7 +20,7 @@ export class UsersController {
             res.status(201);
             next(createdUser);
         } catch (err) {
-            console.error(`Cannot create user: ${JSON.stringify(userToCreate)}, ${AppUtils.getFullException(err)}`);
+            this.logger.error(`Cannot create user: ${JSON.stringify(userToCreate)}`, err);
             next(err);
         }
     }
@@ -28,7 +30,7 @@ export class UsersController {
             const users: User[] = await this.usersService.getAll();
             next(users);
         } catch(err) {
-            console.error(`Cannot get all users, ${AppUtils.getFullException(err)}`);
+            this.logger.error(`Cannot get all users`, err);
             next(err);
         }
     }
@@ -40,7 +42,7 @@ export class UsersController {
             await this.usersService.delete(userId);
             next(`User ${userId} has been deleted`);
         } catch(err) {
-            console.error(`Failed to delete user: ${userId}, ${AppUtils.getFullException(err)}`);
+            this.logger.error(`Failed to delete user: ${userId}`, err);
             next(err);
         }
     } 

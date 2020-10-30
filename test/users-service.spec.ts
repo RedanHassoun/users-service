@@ -5,15 +5,17 @@ import { expect } from 'chai';
 import { User } from '../models/user';
 import { AppDBConnection } from '../repositories/app-db-connection';
 import { mock, instance, when } from 'ts-mockito';
+import { Logger } from '../common/logger';
 
 describe('Users Service', () => {
+    const mockedLogger = instance(mock(Logger));
     it('Should throw an error in case we try to delete a user with an undefined id', () => {
         const mockedDbConnection = mock(AppDBConnection);
         const dbConnectionInstance: AppDBConnection = instance(mockedDbConnection);
 
         const mockedReposetory = mock(UsersRepository);
         const repostoryInstance: UsersRepository = instance(mockedReposetory);
-        const usersService = new UsersService(repostoryInstance, dbConnectionInstance);
+        const usersService = new UsersService(repostoryInstance, dbConnectionInstance, mockedLogger);
 
         expect(() => usersService.delete(null)).to.throw;
     });
@@ -31,7 +33,7 @@ describe('Users Service', () => {
         when(mockedReposetory.save(userInstance, null)).thenThrow(new AlreadyExistError(''));
 
         const repostoryInstance: UsersRepository = instance(mockedReposetory);
-        const usersService = new UsersService(repostoryInstance, dbConnectionInstance);
+        const usersService = new UsersService(repostoryInstance, dbConnectionInstance, mockedLogger);
 
         expect(() => usersService.create(userInstance)).to.throw;
     });
@@ -45,7 +47,7 @@ describe('Users Service', () => {
         when(mockedReposetory.getAll()).thenReturn(Promise.resolve([]));
 
         const repostoryInstance: UsersRepository = instance(mockedReposetory);
-        const usersService = new UsersService(repostoryInstance, dbConnectionInstance);
+        const usersService = new UsersService(repostoryInstance, dbConnectionInstance, mockedLogger);
 
         expect(usersService.getAll()).to.be.empty;
     });
