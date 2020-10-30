@@ -33,7 +33,7 @@ describe('Users HttpRequest', () => {
         const res = new HttpResponseStub();
         usersController.createUser(req, res, (result) => {
             expect(res.getStatus()).to.equal(201);
-            expect(result).not.to.be.null.and.to.have.property('id');
+            expect(result).not.to.be.null;
         });
     });
 });
