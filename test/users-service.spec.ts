@@ -1,3 +1,5 @@
+import { anything } from 'ts-mockito';
+import { PasswordManagerService } from './../services/password-manager-service';
 import { AlreadyExistError } from './../exeptions/already-exist-error';
 import { UsersRepository } from './../repositories/users-repository';
 import { UsersService } from './../services/users-service';
@@ -13,7 +15,10 @@ chai.should();
 chai.use(require('chai-as-promised'));
 
 describe('Users Service', () => {
-    const mockedLogger = instance(mock(Logger));
+    const mockedLoggerInstance: Logger = instance(mock(Logger));
+    const mockedPasswordManager = mock(PasswordManagerService);
+    when(mockedPasswordManager.hashAndSalt(anything())).thenReturn(Promise.resolve('abc'));
+    const mockedPasswordManagerInstance: PasswordManagerService = instance(mockedPasswordManager);
 
     it('Should throw an error in case we try to delete a user with an undefined id', () => {
         const mockedDbConnection = mock(AppDBConnection);
@@ -21,7 +26,8 @@ describe('Users Service', () => {
 
         const mockedReposetory = mock(UsersRepository);
         const repostoryInstance: UsersRepository = instance(mockedReposetory);
-        const usersService = new UsersService(repostoryInstance, dbConnectionInstance, mockedLogger);
+        const usersService = new UsersService(repostoryInstance, dbConnectionInstance, 
+                                            mockedLoggerInstance, mockedPasswordManagerInstance);
 
         expect(() => usersService.delete(null)).to.throw;
     });
@@ -39,7 +45,8 @@ describe('Users Service', () => {
         when(mockedReposetory.save(userInstance, null)).thenThrow(new AlreadyExistError(''));
 
         const repostoryInstance: UsersRepository = instance(mockedReposetory);
-        const usersService = new UsersService(repostoryInstance, dbConnectionInstance, mockedLogger);
+        const usersService = new UsersService(repostoryInstance, dbConnectionInstance, 
+                                            mockedLoggerInstance, mockedPasswordManagerInstance);
 
         expect(() => usersService.create(userInstance)).to.throw;
     });
@@ -53,7 +60,8 @@ describe('Users Service', () => {
         when(mockedReposetory.getAll()).thenReturn(Promise.resolve([]));
 
         const repostoryInstance: UsersRepository = instance(mockedReposetory);
-        const usersService = new UsersService(repostoryInstance, dbConnectionInstance, mockedLogger);
+        const usersService = new UsersService(repostoryInstance, dbConnectionInstance, 
+                                            mockedLoggerInstance, mockedPasswordManagerInstance);
 
         expect(usersService.getAll()).to.be.empty;
     });
@@ -65,7 +73,8 @@ describe('Users Service', () => {
         const mockedReposetory = mock(UsersRepository);
         const repostoryInstance: UsersRepository = instance(mockedReposetory);
 
-        const usersService = new UsersService(repostoryInstance, dbConnectionInstance, mockedLogger);
+        const usersService = new UsersService(repostoryInstance, dbConnectionInstance, 
+                                            mockedLoggerInstance, mockedPasswordManagerInstance);
 
         expect(usersService.delete(1.4)).to.be.eventually.rejectedWith(InputError);
     });

@@ -20,7 +20,7 @@ export class User extends Model<User> {
     public email: string;
 
     @AllowNull(false)
-    @Length({min: 3, max: 50})
+    @Length({min: 3, max: 512})
     @Column(DataType.STRING)
     public password: string;
 }

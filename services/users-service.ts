@@ -6,19 +6,24 @@ import { UsersRepository } from '../repositories/users-repository';
 import { InputError } from '../exeptions/input-error';
 import { AppDBConnection } from '../repositories/app-db-connection';
 import { Logger } from '../common/logger';
+import { PasswordManagerService } from './password-manager-service';
 
 @injectable ()
 export class UsersService {
     
     constructor(@inject(UsersRepository)  private usersRepository: UsersRepository,
                 @inject(AppDBConnection) private appDBConnection: AppDBConnection,
-                @inject(Logger) private logger: Logger) {
+                @inject(Logger) private logger: Logger,
+                @inject(PasswordManagerService) private passwordManager: PasswordManagerService) {
     }
 
     public async create(user: User): Promise<User> {
         this.logger.info(`Creating user: ${user.name}`);
         let transaction: Transaction = null;
         try {
+            const hashedPassword = await this.passwordManager.hashAndSalt(user.password);
+            user.password = hashedPassword;
+
             transaction = await this.appDBConnection.createTransaction();
 
             const createdUser = await this.usersRepository.save(user, transaction);

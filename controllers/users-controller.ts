@@ -20,7 +20,7 @@ export class UsersController {
             const createdUser: User = await this.usersService.create(userToCreate);
 
             res.status(201);
-            next(createdUser);
+            next(this.dtoMapper.asDto(createdUser));
         } catch (err) {
             this.logger.error(`Cannot create user: ${JSON.stringify(userToCreate)}`, err);
             next(err);
