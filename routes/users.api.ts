@@ -20,7 +20,7 @@ export class UsersApi implements AppRoute {
 
         /**
         * @swagger
-        * /user:
+        * /api/v1/user:
         *   post:
         *     tags:
         *     - "User"
@@ -61,7 +61,7 @@ export class UsersApi implements AppRoute {
 
         /**
         * @swagger
-        *  /users:
+        *  /api/v1/users:
         *    get:
         *      tags:
         *      - "User"
@@ -92,7 +92,7 @@ export class UsersApi implements AppRoute {
 
         /**
         * @swagger
-        * /user:
+        * /api/v1/user/{userId}:
         *  delete:
         *    tags:
         *    - "User"
@@ -101,7 +101,7 @@ export class UsersApi implements AppRoute {
         *    produces:
         *    - "application/json"
         *    parameters:
-        *    - name: "id"
+        *    - name: "userId"
         *      in: "path"
         *      description: "The id of the user to delete"
         *      required: true
