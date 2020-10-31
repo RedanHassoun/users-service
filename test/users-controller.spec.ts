@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { DtoMapper } from './../common/dto-mapper';
 import { NotFoundError } from './../exeptions/not-found-error';
-import { HttpRequestStub, HttpResponseStub } from './stubs/expres-http-stubs';
+import { HttpRequestStub, HttpResponseStub } from './stubs/express-http-stubs';
 import { expect } from 'chai';
 import { UsersController } from './../controllers/users-controller';
 import { UsersService } from './../services/users-service';

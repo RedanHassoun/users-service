@@ -20,8 +20,11 @@ export class UsersService {
         let transaction: Transaction = null;
         try {
             transaction = await this.appDBConnection.createTransaction();
+
             const createdUser = await this.usersRepository.save(user, transaction);
             await transaction.commit();
+
+            this.logger.info(`Created user with id: ${createdUser.id}`);
             return createdUser;
         } catch(err) {
             if (transaction) {
@@ -44,9 +47,14 @@ export class UsersService {
 
         let transaction: Transaction = null;
         try {
+            this.logger.info(`Deleting user with id: ${id}`);
+
             transaction = await this.appDBConnection.createTransaction();
             await this.usersRepository.delete(id, transaction);
+            
             await transaction.commit();
+
+            this.logger.info(`User with id ${id} has been deleted.`);
         } catch(err) {
             if (transaction) {
                 await transaction.rollback();
