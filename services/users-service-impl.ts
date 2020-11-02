@@ -20,7 +20,7 @@ export class UsersServiceImpl implements UsersService {
     }
 
     public async create(user: User): Promise<User> {
-        this.logger.info(`Creating user: ${user.name}`);
+        this.logger.info(`Creating user: ${user.name}, email: ${user.email}`);
         let transaction: Transaction = null;
         try {
             const hashedPassword = await this.passwordManager.hashAndSalt(user.password);

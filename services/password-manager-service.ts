@@ -1,10 +1,11 @@
+import { PasswordManagerService } from './../interfaces/password-manager-service';
 import { InputError } from './../exeptions/input-error';
 import { AppUtils } from './../common/app-utils';
 import { injectable, inject  } from 'inversify';
 import * as bcrypt from 'bcrypt';
 
 @injectable ()
-export class PasswordManagerServiceImpl {
+export class PasswordManagerServiceImpl implements PasswordManagerService {
     private readonly SALT_ROUNDS = 10;
 
     public async hashAndSalt(password: string): Promise<string> {

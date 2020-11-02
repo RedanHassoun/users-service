@@ -2,9 +2,10 @@ import { AppUtils } from './app-utils';
 import { injectable } from "inversify";
 import { User } from '../models/db/user';
 import { UserDto } from '../models/dto/user-dto';
+import { DtoMapper } from '../interfaces/dto-mapper';
 
 @injectable ()
-export class DtoMapperImpl {
+export class DtoMapperImpl implements DtoMapper {
     public asDto(user: User): UserDto {
         if (!AppUtils.hasValue(user)) {
             return null;
