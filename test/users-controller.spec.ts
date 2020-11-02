@@ -1,21 +1,24 @@
 import "reflect-metadata";
-import { DtoMapper } from './../common/dto-mapper';
+import { DtoMapper } from './../interfaces/dto-mapper';
+import { ValidationServiceImpl } from './../validation/validation-service-impl';
 import { NotFoundError } from './../exeptions/not-found-error';
 import { HttpRequestStub, HttpResponseStub } from './stubs/express-http-stubs';
 import { expect } from 'chai';
 import { UsersController } from './../controllers/users-controller';
-import { UsersService } from './../services/users-service';
 import { mock, when, instance, anything } from "ts-mockito";
 import { User } from '../models/db/user';
 import { Logger } from '../common/logger';
 import container from './../inversify.config';
+import { TYPES } from '../types';
+import { UsersServiceImpl } from '../services/users-service-impl';
 
 describe('Users Controller', () => {
     const mockedLogger = instance(mock(Logger));
-    const dtoMapper = container.get(DtoMapper);
+    const dtoMapper: DtoMapper = container.get(TYPES.DtoMapper);
+    const validationService = instance(mock(ValidationServiceImpl));
 
     it('Should return and object with status code 201 if the user was created', async () => {
-        const mockedService = mock(UsersService);
+        const mockedService = mock(UsersServiceImpl);
 
         const mockedResult: Promise<User> = Promise.resolve({
             id: 1,
@@ -28,7 +31,8 @@ describe('Users Controller', () => {
 
         const serviceInstance = instance(mockedService);
 
-        const usersController = new UsersController(serviceInstance, mockedLogger, dtoMapper);
+        const usersController = new UsersController(serviceInstance, mockedLogger, 
+                                                    validationService, dtoMapper);
 
         const req = new HttpRequestStub();
         req.body = {
@@ -46,13 +50,13 @@ describe('Users Controller', () => {
     });
 
     it('Should return a not found error in case we try to delete a non existing user', async () => {
-        const mockedService = mock(UsersService);
+        const mockedService = mock(UsersServiceImpl);
 
         when(mockedService.delete(anything())).thenThrow(new NotFoundError(''));
 
         const serviceInstance = instance(mockedService);
 
-        const usersController = new UsersController(serviceInstance, mockedLogger, dtoMapper);
+        const usersController = new UsersController(serviceInstance, mockedLogger, validationService, dtoMapper);
 
         const req = new HttpRequestStub();
         req.params = {
