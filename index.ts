@@ -1,10 +1,9 @@
 import "reflect-metadata";
-import { UsersApi } from './routes/users.api';
 import { UsersManagementApp } from './server/server';
-import { AppDBConnection } from "./repositories/app-db-connection";
 import container from "./inversify.config";
+import { TYPES } from "./types";
 
-const app = new UsersManagementApp(container.get(UsersApi), container.get(AppDBConnection));
+const app = new UsersManagementApp(container.get(TYPES.AppRoute), container.get(TYPES.AppDBConnection));
 
 app.start();
 

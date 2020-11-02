@@ -1,14 +1,14 @@
+import { AppDBConnection } from './../interfaces/app-db-connection';
 import { User } from '../models/db/user';
 import { injectable } from 'inversify';
 import { Sequelize } from "sequelize-typescript";
 import { Transaction } from 'sequelize/types';
 
 @injectable ()
-export class AppDBConnection {
+export class AppDBConnectionImpl implements AppDBConnection {
     private db: Sequelize;
 
     public async connect(): Promise<void> {
-        console.log(`Database url: ${process.env.DATABASE_URL}`);
         this.db = new Sequelize({
             database: 'usersapp',
             dialect: 'postgres',

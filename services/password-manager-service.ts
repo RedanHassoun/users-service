@@ -4,7 +4,7 @@ import { injectable, inject  } from 'inversify';
 import * as bcrypt from 'bcrypt';
 
 @injectable ()
-export class PasswordManagerService {
+export class PasswordManagerServiceImpl {
     private readonly SALT_ROUNDS = 10;
 
     public async hashAndSalt(password: string): Promise<string> {

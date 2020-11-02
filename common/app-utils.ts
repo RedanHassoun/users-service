@@ -7,7 +7,9 @@ export class AppUtils {
     }
 
     public static getFullException(err: Error): string {
-        if (!err) return '';
+        if (!err) {
+            return '';
+        }
         return `${err.message}, stack: ${err.stack}`;
     }
 

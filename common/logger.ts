@@ -12,7 +12,7 @@ export class Logger {
         console.log(`${date.toLocaleString()}  [INFO]  ${message}`);
     }
 
-    public error(message: string, err: Error): void {
+    public error(message: string, err?: Error): void {
         const date = new Date();
         const fullError = err ? `\n${AppUtils.getFullException(err)}` : '';
         console.log(`${date.toLocaleString()}  [ERROR]  ${message}${fullError}`);

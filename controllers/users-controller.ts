@@ -1,16 +1,17 @@
 import { UserDto } from './../models/dto/user-dto';
-import { UsersService } from './../services/users-service';
-import { injectable, inject  } from 'inversify';
+import { injectable, inject } from 'inversify';
 import { User } from '../models/db/user';
 import { Logger } from '../common/logger';
-import { DtoMapper } from '../common/dto-mapper';
+import { UsersService } from '../interfaces/users-service';
+import { TYPES } from '../types';
+import { DtoMapper } from '../interfaces/dto-mapper';
 
-@injectable ()
+@injectable()
 export class UsersController {
 
-    constructor(@inject(UsersService) private usersService: UsersService,
-                @inject(Logger) private logger: Logger,
-                @inject(DtoMapper) private dtoMapper: DtoMapper){
+    constructor(@inject(TYPES.UsersService) private usersService: UsersService,
+        @inject(Logger) private logger: Logger,
+        @inject(TYPES.DtoMapper) private dtoMapper: DtoMapper) {
     }
 
     public createUser = async (req: any, res: any, next: any) => {
@@ -30,10 +31,10 @@ export class UsersController {
     public getAll = async (req: any, res: any, next: any) => {
         try {
             const users: User[] = await this.usersService.getAll();
-            
+
             const usersDto: UserDto[] = users.map(user => this.dtoMapper.asDto(user));
             next(usersDto);
-        } catch(err) {
+        } catch (err) {
             this.logger.error(`Cannot get all users`, err);
             next(err);
         }
@@ -45,9 +46,9 @@ export class UsersController {
             userId = Number(req.params.id);
             await this.usersService.delete(userId);
             next(`User ${userId} has been deleted`);
-        } catch(err) {
+        } catch (err) {
             this.logger.error(`Failed to delete user: ${userId}`, err);
             next(err);
         }
-    } 
+    }
 }

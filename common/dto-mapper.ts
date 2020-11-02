@@ -4,7 +4,7 @@ import { User } from '../models/db/user';
 import { UserDto } from '../models/dto/user-dto';
 
 @injectable ()
-export class DtoMapper {
+export class DtoMapperImpl {
     public asDto(user: User): UserDto {
         if (!AppUtils.hasValue(user)) {
             return null;

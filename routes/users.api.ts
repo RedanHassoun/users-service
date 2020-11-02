@@ -1,4 +1,4 @@
-import { AppRoute } from './../common/interfaces/app-route';
+import { AppRoute } from '../interfaces/app-route';
 import { Router } from 'express';
 import { injectable, inject  } from 'inversify';
 import { UsersController } from '../controllers/users-controller';

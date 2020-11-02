@@ -1,11 +1,12 @@
 import { AppUtils } from './../common/app-utils';
 import express = require('express');
 import bodyParser = require('body-parser');
-import { UsersApi } from '../routes/users.api';
 import * as http from 'http';
 import { inject } from 'inversify';
-import { AppDBConnection } from '../repositories/app-db-connection';
 import { globalResponseHandler } from '../middlewares/response-handler';
+import { TYPES } from '../types';
+import { AppRoute } from '../interfaces/app-route';
+import { AppDBConnection } from '../interfaces/app-db-connection';
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 
@@ -14,8 +15,8 @@ export class UsersManagementApp {
     private server: http.Server;
     private readonly DB_CONNECTION_RETRY_DELAY_MILLIS = 5000;
 
-    constructor(@inject(UsersApi) private usersApi: UsersApi, 
-                @inject(AppDBConnection) private dBConnection: AppDBConnection) {
+    constructor(@inject(TYPES.AppRoute) private usersApi: AppRoute, 
+                @inject(TYPES.AppDBConnection) private dBConnection: AppDBConnection) {
         this.app = express();
         this.app.use(bodyParser.json());
     }

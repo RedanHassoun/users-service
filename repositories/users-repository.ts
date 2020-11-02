@@ -5,9 +5,10 @@ import { injectable, inject  } from 'inversify';
 import { User } from '../models/db/user';
 import { NotFoundError } from '../exeptions/not-found-error';
 import { Logger } from '../common/logger';
+import { UsersRepository } from '../interfaces/users-repository';
 
 @injectable ()
-export class UsersRepository {
+export class UsersRepositoryImpl implements UsersRepository {
     constructor(@inject(Logger) private logger: Logger) {
     }
 
