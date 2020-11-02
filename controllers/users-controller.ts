@@ -1,3 +1,5 @@
+import { InputError } from './../exeptions/input-error';
+import { ValidationService } from './../interfaces/validation-service';
 import { UserDto } from './../models/dto/user-dto';
 import { injectable, inject } from 'inversify';
 import { User } from '../models/db/user';
@@ -11,19 +13,26 @@ export class UsersController {
 
     constructor(@inject(TYPES.UsersService) private usersService: UsersService,
         @inject(Logger) private logger: Logger,
+        @inject(TYPES.ValidationService) private validationService: ValidationService,
         @inject(TYPES.DtoMapper) private dtoMapper: DtoMapper) {
     }
 
     public createUser = async (req: any, res: any, next: any) => {
-        let userToCreate: User = null;
+        let userPayload: UserDto = null;
         try {
-            userToCreate = this.dtoMapper.asEntity(req.body);
+            userPayload = req.body;
+            const validationError: string = await this.validationService.validateUser(userPayload);
+            if (validationError) {
+                throw new InputError(validationError);
+            }
+
+            const userToCreate: User = this.dtoMapper.asEntity(req.body);
             const createdUser: User = await this.usersService.create(userToCreate);
 
             res.status(201);
             next(this.dtoMapper.asDto(createdUser));
         } catch (err) {
-            this.logger.error(`Cannot create user: ${JSON.stringify(userToCreate)}`, err);
+            this.logger.error(`Cannot create user: ${JSON.stringify(userPayload)}`, err);
             next(err);
         }
     }

@@ -1,3 +1,4 @@
+import { ValidationService } from './interfaces/validation-service';
 import { UsersService } from './interfaces/users-service';
 import { DtoMapperImpl } from './common/dto-mapper';
 import { Logger } from './common/logger';
@@ -14,6 +15,7 @@ import { TYPES } from './types';
 import { AppDBConnection } from './interfaces/app-db-connection';
 import { DtoMapper } from './interfaces/dto-mapper';
 import { PasswordManagerService } from './interfaces/password-manager-service';
+import { ValidationServiceImpl } from './validation/validation-service-impl';
 
 const container = new Container({ defaultScope: 'Singleton' });
 
@@ -25,5 +27,6 @@ container.bind<Logger>(Logger).toSelf();
 container.bind<UsersController>(UsersController).toSelf();
 container.bind<DtoMapper>(TYPES.DtoMapper).to(DtoMapperImpl);
 container.bind<PasswordManagerService>(TYPES.PasswordManagerService).to(PasswordManagerServiceImpl);
+container.bind<ValidationService>(TYPES.ValidationService).to(ValidationServiceImpl);
 
 export default container;

@@ -5,6 +5,7 @@ const TYPES = {
     AppDBConnection: Symbol.for("AppDBConnection"),
     DtoMapper: Symbol.for("DtoMapper"),
     PasswordManagerService: Symbol.for("PasswordManagerService"),
+    ValidationService: Symbol.for("ValidationService"),
 };
 
 export { TYPES };
