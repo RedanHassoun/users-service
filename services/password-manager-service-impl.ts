@@ -1,6 +1,6 @@
-import { PasswordManagerService } from './../interfaces/password-manager-service';
-import { InputError } from './../exeptions/input-error';
-import { AppUtils } from './../common/app-utils';
+import { PasswordManagerService } from '../interfaces/password-manager-service';
+import { InputError } from '../exeptions/input-error';
+import { AppUtils } from '../common/app-utils';
 import { injectable, inject  } from 'inversify';
 import * as bcrypt from 'bcrypt';
 

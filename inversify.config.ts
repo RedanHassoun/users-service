@@ -8,7 +8,7 @@ import { UsersController } from "./controllers/users-controller";
 import { UsersRepositoryImpl } from "./repositories/users-repository";
 import { UsersServiceImpl } from "./services/users-service-impl";
 import { AppDBConnectionImpl } from "./repositories/app-db-connection";
-import { PasswordManagerServiceImpl } from './services/password-manager-service';
+import { PasswordManagerServiceImpl } from './services/password-manager-service-impl';
 import { AppRoute } from './interfaces/app-route';
 import { UsersRepository } from './interfaces/users-repository';
 import { TYPES } from './types';
