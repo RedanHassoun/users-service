@@ -3,12 +3,12 @@
 This is a service for managing users that is written in Node.JS.
 It is built following the “controller service repository” pattern, the APIs are documented using OpenApi (Swagger), and the server is also Dockerized and can be executed easily.
 
-**For managing and handling HTTP requests I used:** express
-**For dependency injection I used:**  inversify
-**For validation I used:** joi
-**As an ORM I used:**  sequelize
-**And for testing I used:** mocha, chai and ts-mockito
-**And the Database is:**  Postgres (as a Docker container)
+* **For managing and handling HTTP requests I used:** express
+* **For dependency injection I used:**  inversify
+* **For validation I used:** joi
+* **As an ORM I used:**  sequelize
+* **And for testing I used:** mocha, chai and ts-mockito
+* **And the Database is:**  Postgres (as a Docker container)
 
 
 ## How to use:
