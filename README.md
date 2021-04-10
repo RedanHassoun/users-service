@@ -14,7 +14,7 @@ It is built following the “controller service repository” pattern, the APIs 
 ## How to use:
 
 1.	Make sure Docker is installed on your machine
-2.	Extract the archive content in some directory
+2.	Clone the repository
 3.	Open a CLI command line, and go to that directory (You should see the file ‘docker-compose.yml’ on the root folder)
 4.	Run docker-compose up
 
